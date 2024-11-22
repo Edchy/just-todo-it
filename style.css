@@ -1,0 +1,440 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --radius: 6px;
+  --primary-color: oklch(70% 0.35 280);
+}
+
+body,
+select,
+input,
+button {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+body {
+  background-color: oklch(from var(--primary-color) calc(1 - 0.1) c h / .5);
+}
+
+button {
+  cursor: pointer;
+  border-radius: var(--radius);
+  text-transform: uppercase;
+  font-size: .575rem;
+  transition: opacity .2s;
+
+  &:hover {
+    opacity: .75;
+  }
+}
+
+fieldset,
+button,
+select {
+  border: none;
+}
+
+
+
+
+
+.todos-container {
+  background-color: oklch(from var(--primary-color) calc(1 * 0.85) c h);
+  outline: 1px solid oklch(from var(--primary-color) calc(1 - 0.1) c h / .5);
+  margin-inline: auto;
+  padding-bottom: 2rem;
+  width: min(100%, 900px);
+  box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.078);
+  container-type: inline-size;
+
+  @media (width > 900px) {
+    margin-top: .5rem;
+    border-radius: var(--radius);
+  }
+
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-inline: 1rem;
+  color: var(--primary-color);
+  color: var(--primary-color);
+
+  @media (width < 400px) {
+    padding-block: .5rem;
+  }
+
+  svg {
+    fill: var(--primary-color);
+    padding-left: .25rem;
+    width: 100px;
+
+    @media (width < 400px) {
+      display: none;
+    }
+  }
+
+  h1 {
+    font-size: clamp(1.5rem, 2vw + 1rem, 2.5rem);
+    font-weight: 900;
+  }
+
+  fieldset {
+    align-self: end;
+    padding-bottom: .5rem;
+
+    div {
+      display: flex;
+      justify-content: space-around;
+    }
+  }
+}
+
+input[type="radio"] {
+  appearance: none;
+  cursor: pointer;
+  width: 15px;
+  aspect-ratio: 1;
+  /* border: 1px solid rgba(255, 255, 255, 0.274); */
+  border-radius: 50%;
+  box-shadow: 1px 1px rgba(0, 0, 0, 0.259);
+
+  &:checked {
+    border: 4px solid rgba(255, 255, 255, 0.148);
+    box-shadow: none;
+  }
+}
+
+input[type="radio"]:nth-child(1) {
+  background-color: oklch(70% 0.31 280);
+
+
+}
+
+input[type="radio"]:nth-child(2) {
+  background-color: oklch(70% 0.31 520);
+}
+
+input[type="radio"]:nth-child(3) {
+  background-color: oklch(70% 0.31 260);
+}
+
+input[type="radio"]:nth-child(4) {
+  background-color: oklch(70% 0.31 20);
+}
+
+input[type="radio"]:nth-child(5) {
+  background-color: oklch(70% 0.31 73.59);
+}
+
+input[type="radio"]:nth-child(6) {
+  background-color: oklch(70% 0.31 333);
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  background: var(--primary-color);
+  outline: none;
+  opacity: 0.7;
+  transition: opacity .2s;
+  border-radius: var(--radius);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 8px;
+  height: 8px;
+  background-color: oklch(from var(--primary-color) calc(1 - 0.2) c h);
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.todo-list {
+  background-color: var(--primary-color);
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: .5rem;
+  place-content: start;
+  justify-content: center;
+  min-height: 50vh;
+  max-height: 50vh;
+  overflow-y: scroll;
+  padding: 1rem;
+  position: relative;
+
+  @container (width > 700px) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.todo-list:empty::before {
+  content: "All done! Have a beer 🍺, You deserve it!";
+  color: white;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%)
+}
+
+menu {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: .5rem;
+  padding: 1rem;
+  padding-block: 1rem;
+  border-top: 10px solid var(--primary-color);
+  background-color: transparent;
+
+  button {
+    padding: .5rem .75rem;
+    background-color: var(--primary-color);
+    color: white;
+
+    &:is(.remove-all-btn, .remove-complete-btn) {
+      background-color: var(--primary-color);
+
+      &:hover {
+        background-color: oklch(from var(--primary-color) calc(1 - 0.4) c 380);
+      }
+    }
+
+    &.mark-all-btn:disabled {
+      background-color: rgba(208, 205, 205, 0.253);
+      pointer-events: none;
+    }
+  }
+
+  select {
+    border-radius: var(--radius);
+    font-size: .575rem;
+    text-transform: uppercase;
+    padding-inline: .5rem;
+    cursor: pointer;
+    color: white;
+    background-color: var(--primary-color);
+  }
+}
+
+form {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  background-color: var(--primary-color);
+  padding: 1rem;
+
+  .add-fieldset {
+    display: flex;
+    gap: 1rem;
+    /* align-items: center; */
+  }
+
+  .prio-fieldset {
+    display: flex;
+    align-items: center;
+    gap: .25rem;
+
+    &>* {
+      cursor: pointer;
+    }
+
+    label {
+      color: white;
+      text-transform: uppercase;
+      font-size: .75rem;
+
+    }
+
+
+  }
+
+  input[type="text"] {
+    border-radius: var(--radius);
+    border: none;
+    padding: .5rem 1rem;
+    /* width: 50%; */
+    caret-color: oklch(from var(--primary-color) calc(1 * 0.1) c h);
+    ;
+
+    &::placeholder {
+      color: oklch(from var(--primary-color) l c h / .3);
+    }
+
+    &:focus {
+      outline: 4px solid oklch(from var(--primary-color) calc(1 * 0.85) c h);
+    }
+  }
+
+  button {
+    padding: .5rem 1rem;
+    font-weight: bold;
+    background-color: oklch(from var(--primary-color) calc(1 - 0.2) c h);
+    color: white;
+
+    &:focus {
+      outline: 4px solid oklch(from var(--primary-color) calc(1 * 0.85) c h);
+    }
+  }
+}
+
+.todo-item {
+
+  position: relative;
+  color: oklch(from var(--primary-color) calc(1 - 0.9) c h);
+  background-color: oklch(from var(--primary-color) calc(1 * 0.8) c h);
+  height: min(20vw, 75px);
+  display: grid;
+  grid-template-columns: 3fr 1fr 1fr 1fr;
+  padding-left: 2rem;
+  align-items: center;
+
+  text-transform: capitalize;
+  border-radius: var(--radius);
+  transition: all .2s;
+  cursor: pointer;
+
+  &:hover {
+
+    box-shadow: 0 4px oklch(from var(--primary-color) calc(1 - 0.5) c h / .5);
+    opacity: .95;
+  }
+
+  &:active {
+    box-shadow: none;
+    scale: initial;
+  }
+
+  h3 {
+    text-align: center;
+    overflow: hidden;
+    max-width: 24ch;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-left: .5rem;
+    font-size: 1rem;
+    grid-column: span 2;
+  }
+
+  .date,
+  .prio {
+    font-size: .75rem;
+
+    span {
+      font-weight: bold;
+      font-size: .5rem;
+    }
+  }
+
+  .date {
+    grid-column: 3 / 4;
+  }
+
+  .prio {
+    position: absolute;
+    top: 0;
+    border-top-left-radius: var(--radius);
+    background-color: oklch(from var(--primary-color) calc(1 - 0.4) c h);
+    color: white;
+    padding: .25rem .5rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+  }
+
+  button {
+    height: 100%;
+    background: none;
+    grid-column: 4 / -1;
+
+
+    svg {
+      color: oklch(from var(--primary-color) calc(1 - 0.9) c h);
+      width: clamp(15px, 2vw + .5rem, 22px);
+      opacity: .8;
+      pointer-events: none;
+      transition: scale .2s;
+    }
+
+    &:hover svg {
+      opacity: 1;
+      scale: 1.5;
+
+    }
+
+  }
+}
+
+.todo-item.completed button svg {
+  color: oklch(from var(--primary-color) calc(1 - 0.1) c h);
+}
+
+
+.completed {
+  background-color: oklch(from var(--primary-color) calc(1 - 0.6) c h);
+  color: oklch(from var(--primary-color) calc(1 - 0.1) c h);
+  position: relative;
+  opacity: .2;
+
+  &::before {
+    content: "✔";
+    position: absolute;
+    left: 10px;
+    font-size: calc(1vw + 1rem);
+  }
+}
+
+.removing {
+  transition: all .5s;
+  height: 0;
+  opacity: 0;
+  translate: -200%;
+
+
+}
+
+.hidden {
+  display: none;
+
+}
+
+section {
+  width: min(100%, 900px);
+  margin-inline: auto;
+  /* padding: 1rem; */
+}
+
+summary {
+  font-size: .75rem;
+  text-transform: uppercase;
+  padding-block: .25rem;
+}
+
+summary::marker {
+  color: var(--primary-color);
+}
+
+ol {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+
+  li {
+    padding: .25rem .75rem;
+    background-color: oklch(from var(--primary-color) calc(1 * 0.8) c h);
+    border-radius: var(--radius);
+    /* width: max-content; */
+  }
+}

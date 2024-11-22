@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- <link rel="icon" type="image/svg+xml" href="/vite.svg" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todo or not todo? tis te question!</title>
+  </head>
+  <body>
+    <main>
+      <article class="todos-container">
+        <header>
+          <svg
+            role="img"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <title>Nike</title>
+            <path
+              d="M24 7.8L6.442 15.276c-1.456.616-2.679.925-3.668.925-1.12 0-1.933-.392-2.437-1.177-.317-.504-.41-1.143-.28-1.918.13-.775.476-1.6 1.036-2.478.467-.71 1.232-1.643 2.297-2.8a6.122 6.122 0 00-.784 1.848c-.28 1.195-.028 2.072.756 2.632.373.261.886.392 1.54.392.522 0 1.11-.084 1.764-.252L24 7.8z"
+            />
+          </svg>
+          <h1>Just todo it!</h1>
+          <fieldset>
+            <div>
+              <input
+                type="radio"
+                id="purple"
+                name="color"
+                value="purple"
+                checked
+              />
+              <input type="radio" id="green" name="color" value="green" />
+              <input type="radio" id="blue" name="color" value="blue" />
+              <input type="radio" id="red" name="color" value="red" />
+              <input type="radio" id="orange" name="color" value="orange" />
+              <input type="radio" id="pink" name="color" value="pink" />
+            </div>
+            <input
+              type="range"
+              id="lightness-slider"
+              min="1"
+              max="100"
+              step="10"
+              value="70"
+            />
+          </fieldset>
+        </header>
+
+        <ul class="todo-list"></ul>
+        <menu role="toolbar" aria-label="Todo-list controls">
+          <button class="mark-all-btn">Mark All Complete</button>
+
+          <select name="filter" id="filter">
+            <option value="all">show all</option>
+            <option value="complete">show completed</option>
+            <option value="todo">show incompleted</option>
+            <option value="prio">show prioritized</option>
+          </select>
+          <div>
+            <button class="remove-complete-btn">Remove Completed</button>
+            <button class="remove-all-btn">Remove All</button>
+          </div>
+        </menu>
+        <form>
+          <fieldset class="prio-fieldset">
+            <label for="priority">Prio</label>
+            <input type="checkbox" name="priority" id="priority" />
+          </fieldset>
+          <fieldset class="add-fieldset">
+            <input autofocus type="text" placeholder="What to do...?" />
+            <button type="submit">add</button>
+          </fieldset>
+        </form>
+      </article>
+    </main>
+    <section>
+      <details>
+        <summary>recently deleted</summary>
+        <ol class="deleted-todos"></ol>
+      </details>
+    </section>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>
