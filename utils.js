@@ -9,6 +9,7 @@ import {
   markAllBtnCompleteText,
 } from "./main.js";
 
+// konfetti-bibliotek
 import JSConfetti from "js-confetti";
 const jsConfetti = new JSConfetti();
 export function confettiYeahBabyYeah() {
@@ -25,6 +26,7 @@ export function confettiYeahBabyYeah() {
   jsConfetti.addConfetti(jsConfettiOptions);
 }
 
+// utility function för att hämta saker från ls och parsa, returnerar det som skickas in som en andra variabel om LS är tomt.
 export function getItemFromLS(item, initial) {
   const storedItem = localStorage.getItem(item);
   if (storedItem) {
@@ -32,11 +34,12 @@ export function getItemFromLS(item, initial) {
   }
   return initial;
 }
-
+// spara stringifierat objet till LS - namn i LS + det som ska sparas
 export function saveToLS(item, obj) {
   localStorage.setItem(item, JSON.stringify(obj));
 }
 
+// datumformaterare
 export const dateFormatter = new Intl.DateTimeFormat("sv-SE", {
   year: "numeric",
   month: "2-digit",
@@ -45,24 +48,27 @@ export const dateFormatter = new Intl.DateTimeFormat("sv-SE", {
   minute: "2-digit",
 });
 
+// hitta index i array
 export function findIndexById(arr, el) {
   return arr.findIndex((item) => item.id === Number(el.getAttribute("id")));
 }
 
+// uppdatera och rendera lista med borttagna todos (kanske inte optimalt att cleara innerHTML varje gång)
 function updateAndRenderDeletedTodos(element) {
   deletedTodos.push(element.querySelector(".todo-title").innerText);
   deletedTodoSection.innerHTML = "";
   deletedTodos.forEach((todoTitle) => {
     const li = document.createElement("li");
     li.textContent = todoTitle;
+    // få värdet till textrutan vid klick
     li.addEventListener("click", () => {
-      console.log(li);
       form.querySelector("input[type='text']").value = li.textContent;
     });
     deletedTodoSection.append(li);
   });
 }
 
+// ta bort - kolla om delete-knappen trycks - hämta närmaste li, lägg till klass för transition, ta bort från array, spara LS, anropa ovanstående funktion, efter 750ms (tid för transition) ta bort från DOM.
 export function removeTodo(e) {
   if (e.target.matches("button")) {
     const li = e.target.closest("li.todo-item");
@@ -81,8 +87,9 @@ export function removeTodo(e) {
   }
 }
 
+// radera allt - om confirm===true nollställ innerHTML och array
 export function removeAllTodos() {
-  if (todoList.children.length === 0) return;
+  if (todoList.children.length === 0) return; // tidig return om listan är tom
   if (
     !confirm(
       "This will give you time to do the shit you love instead of boring chores"
@@ -103,6 +110,7 @@ export function removeAllTodos() {
   saveToLS("todos", todosArray);
 }
 
+// ta bort färdiga
 export function removeCompletedTodos() {
   if (!confirm("Oh yeah?")) return;
   const filteredTodos = todosArray.filter((todo) => !todo.completed);

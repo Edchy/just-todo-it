@@ -11,9 +11,11 @@ import {
   saveToLS,
 } from "./utils.js";
 
+// för att kolla om mobil - används i submitlyssnaren för att avgöra om input ska få focus efter varje submit eller inte.
 const isMobile =
   window.matchMedia("(max-width: 768px)").matches && "ontouchstart" in window;
 
+// hämta från LS - om inte finns skapa en inital array
 export const todosArray = getItemFromLS("todos", [
   new Todo("äta", ""),
   new Todo("jobba", ""),
@@ -33,27 +35,30 @@ const selectFilter = document.querySelector("#filter");
 const radioButtons = document.querySelectorAll('input[type="radio"]');
 const ranger = document.querySelector('input[type="range"]');
 
+// färgtema från LS
 const lch = getItemFromLS("theme", {
   lightness: 70,
   chroma: 0.31,
   hue: 280,
 });
 
+// sätt custom property till värdena från LS
 document.documentElement.style.setProperty(
   "--primary-color",
   `oklch(${lch.lightness}% ${lch.chroma} ${lch.hue})`
 );
 
+// ändra värde för lightness baserat på range input
 ranger.addEventListener("change", () => {
   lch.lightness = ranger.value;
   document.documentElement.style.setProperty(
     "--primary-color",
     `oklch(${lch.lightness}% ${lch.chroma} ${lch.hue})`
   );
-  saveToLS("theme", lch);
+  saveToLS("theme", lch); // spara det nya värdet till LS
 });
 
-// refaktorera detta att bli mer DRY
+// refaktorera detta att bli mer DRY, otroligt mycket upprepning
 radioButtons.forEach((radio) => {
   radio.addEventListener("change", (e) => {
     if (e.target.value === "purple") {
@@ -112,12 +117,13 @@ removeAllBtn.addEventListener("click", removeAllTodos);
 markAllBtn.addEventListener("click", markAllTodos);
 removeCompletedBtn.addEventListener("click", removeCompletedTodos);
 
+// Skapa nya todos med classen Todo, skicka in värdet för text och checkbox inputs - pusha till array - skapa ny li-mall via createTodo() - appenda till UL - spara i LS
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   const textInput = form.querySelector("input[type='text']");
+  if (textInput.value === "") return;
   const checkboxInput = form.querySelector("input[type='checkbox']");
   const prio = checkboxInput.checked;
-  if (textInput.value === "") return;
   const newTodo = new Todo(textInput.value, prio);
   todosArray.push(newTodo);
   todoList.append(createTodo(newTodo));
@@ -126,15 +132,16 @@ form.addEventListener("submit", (e) => {
   checkboxInput.checked = false;
   saveToLS("todos", todosArray);
 });
+
+// lyssna efter filter-ändringar - toggla CSS-klasser för att applicera filterfunktionalitet
+// här valde jag också att 'disabla' markAll-knappen pga massa bök :)
 selectFilter.addEventListener("change", (e) => {
   let currentOption = e.target.value;
   const todos = todoList.querySelectorAll(".todo-item");
-  // let allHidden = true;
   let markAllBtnDisabled = true;
   switch (currentOption) {
     case "all":
       todos.forEach((todo) => todo.classList.remove("hidden"));
-      // allHidden = false;
       markAllBtnDisabled = false;
       break;
     case "complete":
@@ -143,7 +150,6 @@ selectFilter.addEventListener("change", (e) => {
           todo.classList.add("hidden");
         } else {
           todo.classList.remove("hidden");
-          // allHidden = false;
         }
       });
       break;
@@ -153,7 +159,6 @@ selectFilter.addEventListener("change", (e) => {
           todo.classList.add("hidden");
         } else {
           todo.classList.remove("hidden");
-          // allHidden = false;
         }
       });
       break;
@@ -167,7 +172,6 @@ selectFilter.addEventListener("change", (e) => {
           todo.classList.add("hidden");
         } else {
           todo.classList.remove("hidden");
-          // allHidden = false;
         }
       });
       break;
@@ -181,6 +185,7 @@ selectFilter.addEventListener("change", (e) => {
   }
 });
 
+// markera all todos som färdiga/ofärdiga - baserat på variabeln allTodosCompleted(true/false), lägg till klasser, ändra knapptext, skjut konfetti, spara
 function markAllTodos() {
   const allTodos = todoList.querySelectorAll(".todo-item");
   const allTodosCompleted = todosArray.every((todo) => todo.completed === true);
@@ -198,12 +203,14 @@ function markAllTodos() {
   saveToLS("todos", todosArray);
 }
 
+// rendera lista
 function renderTodoList() {
   todosArray.forEach((todo) => {
     todoList.append(createTodo(todo));
   });
 }
 
+// skapa todo, sätt attribut och innerHTML baserat på objektet som skickas in, returnerar en li - anropas vid submiteventet
 function createTodo(todo) {
   const li = document.createElement("li");
   li.classList.add(`todo-item-${todo.id}`, "todo-item");
@@ -233,10 +240,11 @@ function createTodo(todo) {
   return li;
 }
 
+// markera enskild todo som färdig/inte färdig -
 function taskCompleted(e, todo, li) {
+  // kör bara om det inte är delete knappen som tryckts
   if (!e.target.matches(".delete-btn")) {
     todo.completed = !todo.completed;
-    // li.style.backgroundColor = todo.completed ? "green" : "red";
     if (todo.completed) {
       li.classList.add("completed");
     } else {
@@ -248,11 +256,14 @@ function taskCompleted(e, todo, li) {
       (todo) => todo.completed === true
     );
 
+    // ändra knapptexten om alla är markerade som färdiga
     if (allTodosCompleted) {
       markAllBtn.textContent = markAllBtnIncompleteText;
+      // skjut konfetti om allt är klart och om det inte är något annat filter
       if (selectFilter.value === "all") confettiYeahBabyYeah();
     }
 
+    //uppdatera objektet i arrayen (jösses vad mycket manuella uppdateringar man behöver göra, svårt att hålla UI i sync med DATA)
     const indexOfItemToUpdate = findIndexById(todosArray, li);
     todosArray[indexOfItemToUpdate].completed = todo.completed;
     saveToLS("todos", todosArray);
