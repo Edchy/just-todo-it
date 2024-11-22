@@ -1,6 +1,7 @@
 // import { todosArray, deletedTodos } from "./Todo.js";
 import {
   todoList,
+  form,
   todosArray,
   deletedTodos,
   deletedTodoSection,
@@ -54,6 +55,10 @@ function updateAndRenderDeletedTodos(element) {
   deletedTodos.forEach((todoTitle) => {
     const li = document.createElement("li");
     li.textContent = todoTitle;
+    li.addEventListener("click", () => {
+      console.log(li);
+      form.querySelector("input[type='text']").value = li.textContent;
+    });
     deletedTodoSection.append(li);
   });
 }
@@ -67,10 +72,10 @@ export function removeTodo(e) {
       //ta bort från DOM och lista
       todosArray.splice(indexOfItemToDelete, 1);
       saveToLS("todos", todosArray);
+      updateAndRenderDeletedTodos(li);
 
       setTimeout(() => {
         li.remove();
-        updateAndRenderDeletedTodos(li);
       }, 750);
     }
   }
@@ -85,6 +90,13 @@ export function removeAllTodos() {
   )
     return;
   todoList.innerHTML = "";
+  // deletedTodos.push(...todosArray);
+  // deletedTodos.forEach((todo) => {
+  //   const li = document.createElement("li");
+  //   li.textContent = todo.task;
+  //   deletedTodoSection.append(li);
+  // });
+
   todosArray.length = 0;
 
   markAllBtn.textContent = markAllBtnCompleteText;

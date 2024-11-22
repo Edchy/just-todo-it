@@ -11,6 +11,9 @@ import {
   saveToLS,
 } from "./utils.js";
 
+const isMobile =
+  window.matchMedia("(max-width: 768px)").matches && "ontouchstart" in window;
+
 export const todosArray = getItemFromLS("todos", [
   new Todo("äta", ""),
   new Todo("jobba", ""),
@@ -25,7 +28,7 @@ export const markAllBtnCompleteText = "mark all complete";
 const markAllBtnIncompleteText = "mark all incomplete";
 const removeAllBtn = document.querySelector(".remove-all-btn");
 const removeCompletedBtn = document.querySelector(".remove-complete-btn");
-const form = document.querySelector("form");
+export const form = document.querySelector("form");
 const selectFilter = document.querySelector("#filter");
 const radioButtons = document.querySelectorAll('input[type="radio"]');
 const ranger = document.querySelector('input[type="range"]');
@@ -35,6 +38,7 @@ const lch = getItemFromLS("theme", {
   chroma: 0.31,
   hue: 280,
 });
+
 document.documentElement.style.setProperty(
   "--primary-color",
   `oklch(${lch.lightness}% ${lch.chroma} ${lch.hue})`
@@ -48,6 +52,7 @@ ranger.addEventListener("change", () => {
   );
   saveToLS("theme", lch);
 });
+
 // refaktorera detta att bli mer DRY
 radioButtons.forEach((radio) => {
   radio.addEventListener("change", (e) => {
@@ -117,7 +122,7 @@ form.addEventListener("submit", (e) => {
   todosArray.push(newTodo);
   todoList.append(createTodo(newTodo));
   textInput.value = "";
-  // textInput.focus();
+  if (!isMobile) textInput.focus();
   checkboxInput.checked = false;
   saveToLS("todos", todosArray);
 });
@@ -201,7 +206,7 @@ function renderTodoList() {
 
 function createTodo(todo) {
   const li = document.createElement("li");
-  li.classList.add(`item-${todo.id}`, "todo-item");
+  li.classList.add(`todo-item-${todo.id}`, "todo-item");
   li.setAttribute("id", `${todo.id}`);
   li.setAttribute("tabindex", "0");
   li.setAttribute("role", "button");
