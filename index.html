@@ -49,14 +49,15 @@
 
         <ul class="todo-list"></ul>
         <menu role="toolbar" aria-label="Todo-list controls">
-          <button class="mark-all-btn">Mark All Complete</button>
-
-          <select name="filter" id="filter">
-            <option value="all">show all</option>
-            <option value="complete">show completed</option>
-            <option value="todo">show incompleted</option>
-            <option value="prio">show prioritized</option>
-          </select>
+          <div>
+            <button class="mark-all-btn">Mark All Complete</button>
+            <select name="filter" id="filter">
+              <option value="all">show all</option>
+              <option value="complete">show completed</option>
+              <option value="todo">show incompleted</option>
+              <option value="prio">show prioritized</option>
+            </select>
+          </div>
           <div>
             <button class="remove-complete-btn">Remove Completed</button>
             <button class="remove-all-btn">Remove All</button>
@@ -72,14 +73,15 @@
             <button type="submit">add</button>
           </fieldset>
         </form>
+        <section>
+          <details>
+            <summary>recently deleted</summary>
+            <ol class="deleted-todos"></ol>
+          </details>
+        </section>
       </article>
     </main>
-    <section>
-      <details>
-        <summary>recently deleted</summary>
-        <ol class="deleted-todos"></ol>
-      </details>
-    </section>
+
     <script type="module" src="/main.js"></script>
   </body>
 </html>
