@@ -196,10 +196,18 @@ menu {
   padding-block: 1rem;
   border-top: 10px solid var(--primary-color);
   background-color: transparent;
+  container-type: inline-size;
 
   div {
     display: flex;
     gap: .5rem;
+
+    @container (width < 500px) {
+
+      flex-direction: column;
+      justify-content: center;
+      align-items: stretch;
+    }
   }
 
   button {
@@ -227,7 +235,8 @@ menu {
 
     font-size: .5rem;
     text-transform: uppercase;
-    padding: .25rem .75rem;
+    padding-block: .2rem;
+    padding-inline-start: .5rem;
     cursor: pointer;
     color: white;
     background-color: var(--primary-color);

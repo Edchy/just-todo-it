@@ -117,7 +117,7 @@ form.addEventListener("submit", (e) => {
   todosArray.push(newTodo);
   todoList.append(createTodo(newTodo));
   textInput.value = "";
-  textInput.focus();
+  // textInput.focus();
   checkboxInput.checked = false;
   saveToLS("todos", todosArray);
 });
