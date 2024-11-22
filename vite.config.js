@@ -1,5 +1,5 @@
-import { defineConfig } from "vite";
+// import { defineConfig } from "vite";
 
-export default defineConfig({
-  base: "/just-todo-it/",
-});
+// export default defineConfig({
+//   base: "/just-todo-it/",
+// });
