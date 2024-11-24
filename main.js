@@ -42,6 +42,8 @@ const lch = getItemFromLS("theme", {
   hue: 280,
 });
 
+ranger.value = lch.lightness;
+
 // sätt custom property till värdena från LS
 document.documentElement.style.setProperty(
   "--primary-color",
